@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "InfoSaône - Fixer et mémoriser la largeur des colonnes dans Odoo 18",
-    "version": "18.0.1.0.0",
+    "name": "InfoSaône - Fixer et mémoriser la largeur des colonnes dans Odoo 20",
+    "version": "20.0.1.0.0",
     "author": "InfoSaône / Tony Galmiche",
     "category": "InfoSaône",
     "summary": "Mémorise les largeurs de colonnes par utilisateur",
@@ -13,7 +13,7 @@
         'web',
     ],
     "data": [
-        'security/ir.model.access.csv',
+        'security/ir.access.csv',
         'views/is_set_column_width_views.xml',
     ],
     "assets": {

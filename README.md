@@ -2,7 +2,7 @@
 
 ## Description
 
-Module Odoo 18 permettant de **mémoriser automatiquement les largeurs de colonnes** des vues liste (tree) pour chaque utilisateur. Lorsqu'un utilisateur redimensionne une colonne dans un tableau, la nouvelle largeur est sauvegardée en base de données et restaurée automatiquement lors des prochaines visites.
+Module Odoo 20 permettant de **mémoriser automatiquement les largeurs de colonnes** des vues liste (tree) pour chaque utilisateur. Lorsqu'un utilisateur redimensionne une colonne dans un tableau, la nouvelle largeur est sauvegardée en base de données et restaurée automatiquement lors des prochaines visites.
 
 ## Fonctionnalités
 
@@ -46,7 +46,7 @@ Le module patche le composant `ListRenderer` d'Odoo pour :
 
 1. Copier le module dans le répertoire des addons Odoo
 2. Mettre à jour la liste des modules
-3. Installer le module "InfoSaône - Fixer et mémoriser la largeur des colonnes dans Odoo 18"
+3. Installer le module "InfoSaône - Fixer et mémoriser la largeur des colonnes dans Odoo 20"
 
 ## Dépendances
 

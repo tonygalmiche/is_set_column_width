@@ -1,0 +1,2 @@
+id,name,model_id,group_id/id,operation,domain
+access_is_set_column_width,is.set.column.width,is.set.column.width,base.group_user,crud,

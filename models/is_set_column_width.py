@@ -13,10 +13,10 @@ class IsSetColumnWidth(models.Model):
     column_widths = fields.Text(string='Largeurs des colonnes', 
                                 help="JSON contenant les largeurs des colonnes {nom_colonne: largeur}")
 
-    _sql_constraints = [
-        ('user_view_unique', 'unique(user_id, view_key)', 
-         'Une seule configuration par utilisateur et par vue')
-    ]
+    _user_view_unique = models.Constraint(
+        'unique(user_id, view_key)',
+        'Une seule configuration par utilisateur et par vue',
+    )
 
     @api.model
     def get_column_widths(self, view_key):

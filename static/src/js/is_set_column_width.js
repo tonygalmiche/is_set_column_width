@@ -1,10 +1,8 @@
-/** @odoo-module **/
-
 import { patch } from "@web/core/utils/patch";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { useService } from "@web/core/utils/hooks";
 import { useDebounced } from "@web/core/utils/timing";
-import { onMounted, onWillUnmount, useEffect, onWillStart } from "@odoo/owl";
+import { onMounted, onPatched, onWillUnmount, onWillStart } from "@odoo/owl";
 
 /**
  * Ce module patche le ListRenderer pour :
@@ -62,8 +60,8 @@ patch(ListRenderer.prototype, {
             await this._isPreloadColumnWidths();
         });
         
-        // useEffect s'exécute après chaque rendu
-        useEffect(() => {
+        // onPatched s'exécute après chaque rendu (en Owl 3, useEffect ne se relance plus à chaque rendu)
+        onPatched(() => {
             // Si on n'est pas en train de redimensionner et qu'on a des largeurs sauvegardées
             if (!this.isResizing) {
                 this._isApplyColumnWidthsFromCache();
@@ -72,8 +70,8 @@ patch(ListRenderer.prototype, {
         
         onMounted(() => {
             // Marquer la table avec notre ID
-            if (this.tableRef?.el) {
-                this.tableRef.el.dataset.isTableId = this.isTableId;
+            if (this.tableRef()) {
+                this.tableRef().dataset.isTableId = this.isTableId;
             }
             
             // Écouter les événements de pointeur sur les handles de resize
@@ -186,12 +184,10 @@ patch(ListRenderer.prototype, {
         const styleId = `is-column-width-style-${this.isTableId}`;
         const tableSelector = `table[data-is-table-id="${this.isTableId}"]`;
         
-        // Ne pas bloquer les colonnes pendant le resize (classe o_resizing)
-        let cssRules = `${tableSelector}:not(.o_resizing) { table-layout: fixed !important; }\n`;
+        let cssRules = `${tableSelector} { table-layout: fixed !important; }\n`;
         
         for (const [columnName, width] of Object.entries(columnStyles)) {
-            // Appliquer seulement si la table n'est pas en cours de resize
-            cssRules += `${tableSelector}:not(.o_resizing) thead th[data-name="${columnName}"] { 
+            cssRules += `${tableSelector} thead th[data-name="${columnName}"] { 
                 width: ${width}px !important; 
                 min-width: ${width}px !important; 
                 max-width: ${width}px !important; 
@@ -223,10 +219,10 @@ patch(ListRenderer.prototype, {
         const savedWidths = columnWidthsCache[viewKey];
         
         if (!savedWidths || Object.keys(savedWidths).length === 0) return;
-        if (!this.tableRef?.el) return;
+        if (!this.tableRef()) return;
         
-        const table = this.tableRef.el;
-        if (table.classList.contains("o_resizing")) return;
+        const table = this.tableRef();
+        if (this.columnWidths?.resizing) return;
         
         // Marquer la table
         if (!table.dataset.isTableId) {
@@ -254,9 +250,9 @@ patch(ListRenderer.prototype, {
      * Récupère les largeurs actuelles des colonnes depuis le DOM
      */
     _isGetCurrentColumnWidths() {
-        if (!this.tableRef?.el) return {};
+        if (!this.tableRef()) return {};
         
-        const table = this.tableRef.el;
+        const table = this.tableRef();
         const headers = [...table.querySelectorAll("thead th[data-name]")];
         const columnWidths = {};
         

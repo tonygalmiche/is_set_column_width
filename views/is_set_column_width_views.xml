@@ -44,7 +44,7 @@
                 <field name="user_id"/>
                 <field name="view_key"/>
                 <filter string="Mes préférences" name="my_prefs" domain="[('user_id', '=', uid)]"/>
-                <group expand="0" string="Grouper par">
+                <group>
                     <filter string="Utilisateur" name="group_user" context="{'group_by': 'user_id'}"/>
                 </group>
             </search>
